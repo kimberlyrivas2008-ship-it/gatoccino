@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatoccino | Café, libros y michis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="portada">
+        <div class="logo-fondo">
+            <!-- Guarda tu logo como logo.png en esta carpeta -->
+            <img src="logo.png" alt="Logo de Gatoccino">
+        </div>
+
+        <div class="portada-contenido">
+            <p class="bienvenida">UN LUGAR PARA RELAJARTE</p>
+            <h1>gatoccino<span>🐾</span></h1>
+            <h2>Café, libros y muchos michis</h2>
+            <p class="descripcion">
+                Un rincón acogedor donde el aroma del café,
+                los libros y la compañía de nuestros gatitos
+                hacen cada momento especial.
+            </p>
+
+            <a href="#nosotros" class="boton">Descubre Gatoccino</a>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#menu-cafe">Menú</a>
+        <a href="#experiencias">Experiencias</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <main>
+        <section id="inicio" class="bienvenida-seccion">
+            <p class="etiqueta">BIENVENIDO A GATOCCINO</p>
+            <h2>Tu momento favorito tiene bigotes</h2>
+            <p>
+                Disfruta una bebida deliciosa, encuentra tu próximo
+                libro favorito y comparte momentos especiales con
+                nuestros adorables compañeros felinos.
+            </p>
+        </section>
+
+        <section id="nosotros" class="seccion">
+            <h2>Un café diferente</h2>
+            <p>
+                Gatoccino es una cafetería temática pensada para
+                quienes aman el café, la lectura, los juegos y los gatos.
+                Un espacio tranquilo para compartir con amigos
+                o disfrutar de un momento para ti.
+            </p>
+        </section>
+
+        <section id="menu-cafe" class="seccion menu-cafe">
+            <p class="etiqueta">PREPARADO CON AMOR</p>
+            <h2>Nuestro menú</h2>
+
+            <div class="tarjetas">
+                <article class="tarjeta">
+                    <div class="emoji">☕</div>
+                    <h3>Cafecitos</h3>
+                    <p>Café caliente, capuchinos y bebidas cremosas.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="emoji">🍰</div>
+                    <h3>Postres</h3>
+                    <p>Delicias dulces para acompañar tu bebida.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="emoji">🐱</div>
+                    <h3>Momentos michi</h3>
+                    <p>Relájate y disfruta la compañía de nuestros gatos.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="experiencias" class="seccion experiencias">
+            <h2>Mucho más que café</h2>
+            <div class="tarjetas">
+                <article class="tarjeta">
+                    <div class="emoji">📚</div>
+                    <h3>Rincón de lectura</h3>
+                    <p>Libros y tranquilidad en un ambiente acogedor.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="emoji">🎲</div>
+                    <h3>Juegos de mesa</h3>
+                    <p>Comparte risas y buenos momentos con amigos.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="contacto" class="seccion contacto">
+            <p class="etiqueta">VEN A CONOCERNOS</p>
+            <h2>¡Te esperamos en Gatoccino!</h2>
+            <p>Cochabamba, Bolivia</p>
+            <p>Pronto encontrarás aquí nuestros horarios y redes sociales.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>🐾 gatoccino · Café, libros y muchos michis ☕</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root {
+    --crema: #F5EFE6;
+    --beige: #E9D9C7;
+    --marron: #684735;
+    --rosa: #D9A6A0;
+    --texto: #4D3A30;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--crema);
+    color: var(--texto);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.portada {
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        90deg,
+        rgba(245,239,230,0.05) 0%,
+        var(--crema) 60%,
+        #F7F0E8 100%
+    );
+}
+
+.logo-fondo {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 58%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black 43%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black 43%,
+        transparent 100%
+    );
+}
+
+.logo-fondo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.portada-contenido {
+    position: relative;
+    z-index: 1;
+    width: 52%;
+    margin-left: 46%;
+    padding: 70px 7% 70px 0;
+}
+
+.bienvenida, .etiqueta {
+    color: #A87969;
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.portada h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(45px, 6vw, 82px);
+    color: var(--marron);
+    line-height: 1.1;
+}
+
+.portada h1 span {
+    font-size: 30px;
+    margin-left: 8px;
+}
+
+.portada h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.5vw, 30px);
+    font-weight: 500;
+    margin: 20px 0;
+}
+
+.descripcion {
+    max-width: 460px;
+    line-height: 1.9;
+    color: #776458;
+    margin-bottom: 30px;
+}
+
+.boton {
+    display: inline-block;
+    background: var(--marron);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.boton:hover {
+    background: #91664E;
+    transform: translateY(-3px);
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 38px;
+    flex-wrap: wrap;
+    padding: 22px;
+    background: #FFFDF9;
+    border-bottom: 1px solid #E8DCCE;
+}
+
+.menu a {
+    text-decoration: none;
+    color: var(--marron);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.menu a:hover {
+    color: #BD837B;
+}
+
+.seccion, .bienvenida-seccion {
+    padding: 90px 8%;
+    text-align: center;
+}
+
+.bienvenida-seccion {
+    max-width: 900px;
+    margin: auto;
+}
+
+.seccion h2, .bienvenida-seccion h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    margin-bottom: 22px;
+    color: var(--marron);
+}
+
+.seccion p, .bienvenida-seccion p {
+    line-height: 1.9;
+}
+
+.seccion > p:not(.etiqueta) {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.menu-cafe, .experiencias {
+    background: #EFE3D6;
+}
+
+.tarjetas {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.tarjeta {
+    background: #FFFCF8;
+    padding: 32px 25px;
+    border-radius: 20px;
+    width: min(100%, 290px);
+    box-shadow: 0 8px 25px rgba(83, 56, 37, 0.06);
+    transition: 0.3s;
+}
+
+.tarjeta:hover {
+    transform: translateY(-6px);
+}
+
+.tarjeta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    margin: 15px 0 10px;
+}
+
+.emoji {
+    font-size: 42px;
+}
+
+.contacto {
+    background: #F8F3EC;
+}
+
+footer {
+    background: var(--marron);
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+@media (max-width: 750px) {
+    .portada {
+        min-height: 720px;
+        align-items: flex-end;
+    }
+
+    .logo-fondo {
+        width: 100%;
+        height: 48%;
+        top: 0;
+        bottom: auto;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 45%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            black 45%,
+            transparent 100%
+        );
+    }
+
+    .portada-contenido {
+        width: 100%;
+        margin: 0;
+        padding: 300px 25px 45px;
+        text-align: center;
+    }
+
+    .descripcion {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .menu {
+        gap: 18px;
+    }
+
+    .seccion, .bienvenida-seccion {
+        padding: 65px 22px;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const enlaces = document.querySelectorAll('.menu a');
+
+    enlaces.forEach((enlace) => {
+        enlace.addEventListener('click', (evento) => {
+            const destino = enlace.getAttribute('href');
+            const seccion = document.querySelector(destino);
+
+            if (seccion) {
+                evento.preventDefault();
+                seccion.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
