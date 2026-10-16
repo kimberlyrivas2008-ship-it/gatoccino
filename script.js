@@ -208,6 +208,88 @@ const adoptionCats = [
     }
 ];
 
+// Edita estos datos al definir la agenda; los valores null se muestran como pendientes de confirmación.
+const gatoccinoEvents = [
+    {
+        id: "juegos-y-michis",
+        title: "Tardes de juegos y michis 🎲",
+        category: "juegos",
+        categoryLabel: "Juegos",
+        description: "Una experiencia para compartir con amigos, disfrutar de juegos de mesa, tomar bebidas deliciosas y pasar tiempo con nuestros gatitos.",
+        image: "photo-1610890716171-6b1bb98ffd09",
+        imageAlt: "Juegos de mesa preparados para compartir",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    },
+    {
+        id: "club-lectura-gatuno",
+        title: "Club de lectura gatuno 📚",
+        category: "lectura",
+        categoryLabel: "Lectura",
+        description: "Un espacio tranquilo para leer, conversar sobre libros y disfrutar de una taza de café mientras los gatitos nos acompañan.",
+        image: "photo-1512820790803-83ca734da794",
+        imageAlt: "Libros abiertos para una tarde de lectura",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    },
+    {
+        id: "adopcion-responsable",
+        title: "Jornadas de adopción responsable 🐾",
+        category: "adopciones",
+        categoryLabel: "Adopciones",
+        description: "Actividades para conocer gatitos que buscan un hogar amoroso, recibir información sobre adopción responsable y contactar con las personas encargadas del proceso.",
+        image: "photo-1514888286974-6c03e2ca1dba",
+        imageAlt: "Gatito esperando conocer a su futura familia",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    },
+    {
+        id: "gatoccino-temporada",
+        title: "Gatoccino de temporada 🎃",
+        category: "temporadas",
+        categoryLabel: "Temporadas",
+        description: "Eventos temáticos según la época del año, como Halloween gatuno, Navidad, San Valentín o celebraciones especiales, con decoración, bebidas temáticas y actividades divertidas.",
+        image: "photo-1511795409834-ef04bbd61622",
+        imageAlt: "Espacio decorado para una celebración especial",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    },
+    {
+        id: "cumpleanos-celebraciones",
+        title: "Cumpleaños y celebraciones especiales 🎂",
+        category: "celebraciones",
+        categoryLabel: "Celebraciones",
+        description: "Un servicio para organizar encuentros pequeños y celebraciones en un ambiente acogedor, con bebidas, postres y la compañía de nuestros michis, siempre respetando su bienestar.",
+        image: "photo-1464349095431-e9a21285b5f3",
+        imageAlt: "Pastel para celebrar un cumpleaños",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    },
+    {
+        id: "talleres-creativos",
+        title: "Talleres creativos con gatitos 🎨",
+        category: "talleres",
+        categoryLabel: "Talleres",
+        description: "Actividades como dibujo, pintura, manualidades y decoración de accesorios inspirados en gatos.",
+        image: "photo-1513364776144-60967b0f800f",
+        imageAlt: "Materiales de pintura para un taller creativo",
+        date: null,
+        time: null,
+        price: null,
+        availability: null
+    }
+];
+
 function photoUrl(photoId) {
     return `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=640&q=80`;
 }
@@ -345,3 +427,306 @@ document.getElementById("adoption-form").addEventListener("submit", (event) => {
     feedback.textContent = `Gracias, ${formData.get("name")}. Tu solicitud de ejemplo para ${formData.get("cat")} está lista; recuerda que no se envió.`;
     form.reset();
 });
+
+function eventDate(eventItem) {
+    if (!eventItem.date || !/^\d{4}-\d{2}-\d{2}$/.test(eventItem.date)) {
+        return null;
+    }
+
+    const [year, month, day] = eventItem.date.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+        ? date
+        : null;
+}
+
+function eventDateLabel(eventItem) {
+    const date = eventDate(eventItem);
+    return date
+        ? new Intl.DateTimeFormat("es", { day: "numeric", month: "long", year: "numeric" }).format(date)
+        : "Fecha por confirmar";
+}
+
+function eventMetadata(eventItem) {
+    return [
+        ["Fecha", eventDateLabel(eventItem)],
+        ["Horario", eventItem.time || "Horario por confirmar"],
+        ["Precio", eventItem.price || "Precio por confirmar"],
+        ["Cupos", eventItem.availability || "Cupos por confirmar"]
+    ];
+}
+
+function createEventCard(eventItem) {
+    const card = document.createElement("article");
+    card.className = "event-card";
+    card.dataset.category = eventItem.category;
+
+    const image = document.createElement("img");
+    image.className = "event-card-image";
+    image.src = photoUrl(eventItem.image);
+    image.alt = eventItem.imageAlt;
+    image.loading = "lazy";
+    image.width = 640;
+    image.height = 420;
+
+    const content = document.createElement("div");
+    content.className = "event-card-content";
+
+    const category = document.createElement("span");
+    category.className = "event-category";
+    category.textContent = eventItem.categoryLabel;
+
+    const title = document.createElement("h4");
+    title.textContent = eventItem.title;
+
+    const description = document.createElement("p");
+    description.className = "event-card-description";
+    description.textContent = eventItem.description;
+
+    const metadata = document.createElement("dl");
+    metadata.className = "event-card-meta";
+    eventMetadata(eventItem).forEach(([label, value]) => {
+        const item = document.createElement("div");
+        const term = document.createElement("dt");
+        term.textContent = label;
+        const detail = document.createElement("dd");
+        detail.textContent = value;
+        item.append(term, detail);
+        metadata.append(item);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "event-card-actions";
+
+    const detailsButton = document.createElement("button");
+    detailsButton.className = "button button-outline";
+    detailsButton.type = "button";
+    detailsButton.textContent = "Ver detalles";
+    detailsButton.addEventListener("click", () => openEventDetails(eventItem));
+
+    const requestButton = document.createElement("button");
+    requestButton.className = "event-request-link";
+    requestButton.type = "button";
+    requestButton.textContent = "Quiero participar →";
+    requestButton.addEventListener("click", () => selectEventForRequest(eventItem));
+
+    actions.append(detailsButton, requestButton);
+    content.append(category, title, description, metadata, actions);
+    card.append(image, content);
+    return card;
+}
+
+function createUpcomingItem(eventItem) {
+    const item = document.createElement("article");
+    item.className = "upcoming-item";
+
+    const date = document.createElement("span");
+    date.className = "upcoming-date";
+    date.textContent = eventDateLabel(eventItem);
+
+    const title = document.createElement("h4");
+    title.textContent = eventItem.title;
+
+    const time = document.createElement("p");
+    time.textContent = eventItem.time || "Horario por confirmar";
+
+    const detailsButton = document.createElement("button");
+    detailsButton.className = "upcoming-details";
+    detailsButton.type = "button";
+    detailsButton.textContent = "Ver detalles →";
+    detailsButton.addEventListener("click", () => openEventDetails(eventItem));
+
+    item.append(date, title, time, detailsButton);
+    return item;
+}
+
+function renderGatoccinoEvents() {
+    const eventGrid = document.getElementById("events-grid");
+    const upcomingList = document.getElementById("upcoming-events");
+    const eventChoice = document.getElementById("event-choice");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const upcomingEvents = gatoccinoEvents
+        .map((item, index) => ({ item, index, date: eventDate(item) }))
+        .filter(({ date }) => !date || date >= today)
+        .sort((first, second) => {
+            if (first.date && second.date) {
+                return first.date - second.date || first.index - second.index;
+            }
+            if (first.date) {
+                return -1;
+            }
+            if (second.date) {
+                return 1;
+            }
+            return first.index - second.index;
+        })
+        .map(({ item }) => item);
+
+    gatoccinoEvents.forEach((eventItem) => {
+        eventGrid.append(createEventCard(eventItem));
+        const option = document.createElement("option");
+        option.value = eventItem.id;
+        option.textContent = eventItem.title;
+        eventChoice.append(option);
+    });
+
+    upcomingEvents.slice(0, 3).forEach((eventItem) => {
+        upcomingList.append(createUpcomingItem(eventItem));
+    });
+}
+
+function openEventDetails(eventItem) {
+    const dialog = document.getElementById("event-details-dialog");
+    const image = document.getElementById("event-dialog-image");
+    image.src = photoUrl(eventItem.image);
+    image.alt = eventItem.imageAlt;
+    document.getElementById("event-dialog-title").textContent = eventItem.title;
+    document.getElementById("event-dialog-description").textContent = eventItem.description;
+
+    const metadata = document.getElementById("event-dialog-meta");
+    metadata.replaceChildren();
+    eventMetadata(eventItem).forEach(([label, value]) => {
+        const item = document.createElement("li");
+        item.textContent = `${label}: ${value}`;
+        metadata.append(item);
+    });
+
+    document.getElementById("event-dialog-request").onclick = () => {
+        dialog.close();
+        selectEventForRequest(eventItem);
+    };
+    dialog.showModal();
+}
+
+function selectEventForRequest(eventItem) {
+    const eventChoice = document.getElementById("event-choice");
+    eventChoice.value = eventItem.id;
+    const requestPanel = document.getElementById("solicitud-evento");
+    requestPanel.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("event-visitor-name").focus({ preventScroll: true });
+}
+
+document.querySelectorAll(".event-filter").forEach((filterButton) => {
+    filterButton.addEventListener("click", () => {
+        const selectedCategory = filterButton.dataset.eventFilter;
+        document.querySelectorAll(".event-filter").forEach((button) => {
+            const isActive = button === filterButton;
+            button.classList.toggle("is-active", isActive);
+            button.setAttribute("aria-pressed", String(isActive));
+        });
+        document.querySelectorAll(".event-card").forEach((card) => {
+            card.hidden = selectedCategory !== "todos" && card.dataset.category !== selectedCategory;
+        });
+    });
+});
+
+document.querySelector(".event-dialog-close").addEventListener("click", () => {
+    document.getElementById("event-details-dialog").close();
+});
+
+document.getElementById("event-request-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const selectedEvent = gatoccinoEvents.find((item) => item.id === formData.get("event"));
+    if (!selectedEvent) {
+        document.getElementById("event-form-feedback").textContent = "Elige una actividad para continuar.";
+        return;
+    }
+
+    const subject = encodeURIComponent(`Consulta sobre ${selectedEvent.title}`);
+    const body = encodeURIComponent([
+        `Nombre: ${formData.get("name")}`,
+        `Contacto: ${formData.get("contact")}`,
+        `Evento: ${selectedEvent.title}`,
+        `Participantes: ${formData.get("attendees")}`,
+        "",
+        "Entiendo que esta consulta no confirma una reserva; el equipo de Gatoccino debe confirmar la disponibilidad."
+    ].join("\n"));
+    const emailLink = document.createElement("a");
+    emailLink.href = `mailto:hola@gatoccino.com?subject=${subject}&body=${body}`;
+    emailLink.target = "_blank";
+    emailLink.rel = "noopener noreferrer";
+    emailLink.textContent = "Enviar consulta por correo";
+
+    const feedback = document.getElementById("event-form-feedback");
+    feedback.replaceChildren(
+        document.createTextNode(`Se preparó una consulta sobre ${selectedEvent.title}. Usa el enlace para enviarla por correo; la participación queda pendiente de confirmación del equipo. `),
+        emailLink
+    );
+});
+
+let calendarMonth = new Date();
+calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+
+function renderEventsCalendar() {
+    const calendar = document.getElementById("events-calendar");
+    const monthHeading = document.getElementById("calendar-month");
+    const selectedYear = calendarMonth.getFullYear();
+    const selectedMonth = calendarMonth.getMonth();
+    const monthName = new Intl.DateTimeFormat("es", { month: "long", year: "numeric" }).format(calendarMonth);
+    monthHeading.textContent = monthName.charAt(0).toLocaleUpperCase("es") + monthName.slice(1);
+    calendar.replaceChildren();
+
+    ["L", "M", "X", "J", "V", "S", "D"].forEach((day) => {
+        const weekday = document.createElement("span");
+        weekday.className = "calendar-weekday";
+        weekday.textContent = day;
+        calendar.append(weekday);
+    });
+
+    const firstWeekday = (new Date(selectedYear, selectedMonth, 1).getDay() + 6) % 7;
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+    for (let index = 0; index < firstWeekday; index += 1) {
+        const blankDay = document.createElement("span");
+        blankDay.className = "calendar-blank";
+        calendar.append(blankDay);
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+        const calendarDate = new Date(selectedYear, selectedMonth, day);
+        const dateKey = [
+            selectedYear,
+            String(selectedMonth + 1).padStart(2, "0"),
+            String(day).padStart(2, "0")
+        ].join("-");
+        const eventsOnDate = gatoccinoEvents.filter((item) => item.date === dateKey);
+        const dayButton = document.createElement("button");
+        dayButton.className = "calendar-day";
+        dayButton.type = "button";
+        dayButton.textContent = String(day);
+        dayButton.setAttribute("aria-label", `${day} de ${monthName}${eventsOnDate.length ? `: ${eventsOnDate.map((item) => item.title).join(", ")}` : ""}`);
+        if (eventsOnDate.length) {
+            dayButton.classList.add("has-event");
+        }
+        dayButton.addEventListener("click", () => {
+            const note = document.getElementById("calendar-note");
+            note.textContent = eventsOnDate.length
+                ? `El ${day} de ${monthName}: ${eventsOnDate.map((item) => item.title).join(", ")}. Consulta disponibilidad con el equipo.`
+                : `No hay actividades publicadas para el ${day} de ${monthName}.`;
+        });
+        calendar.append(dayButton);
+    }
+
+    const scheduledEvents = gatoccinoEvents.some((item) => {
+        const date = eventDate(item);
+        return date && date.getFullYear() === selectedYear && date.getMonth() === selectedMonth;
+    });
+    document.getElementById("calendar-note").textContent = scheduledEvents
+        ? "Selecciona un día marcado para consultar sus actividades."
+        : "Las fechas de actividades están por confirmar.";
+}
+
+document.getElementById("calendar-previous").addEventListener("click", () => {
+    calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
+    renderEventsCalendar();
+});
+
+document.getElementById("calendar-next").addEventListener("click", () => {
+    calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1);
+    renderEventsCalendar();
+});
+
+renderGatoccinoEvents();
+renderEventsCalendar();
